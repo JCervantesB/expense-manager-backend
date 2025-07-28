@@ -18,7 +18,7 @@ const makeRequest = (url, urlName) => {
     .on("error", (e) => console.error(`Error while sending request to ${urlName}`, e));
 };
 
-const job = new cron.CronJob("*/14 * * * *", function () {
+const job = new cron.CronJob("*/120 * * * *", function () {
   urls.forEach(({ url, name }) => {
     makeRequest(url, name);
   });
