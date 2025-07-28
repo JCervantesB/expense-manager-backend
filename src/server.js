@@ -5,10 +5,14 @@ import rateLimiter from "./middleware/rateLimiter.js";
 
 import transactionsRoute from "./routes/transactionsRoute.js";
 
+import job from ".config/cron.js"
+
 dotenv.config();
 
 // Crear instancia de la aplicación Express
 const app = express();
+
+if(process.env.NODE_ENV === "production") job.start();
 
 // Middleware para parsear JSON en las peticiones
 app.use(rateLimiter);
@@ -23,6 +27,10 @@ app.get("/health", (req, res) => {
 });
 
 app.use('/api/transactions', transactionsRoute);
+
+app.get("/api/health", (req, res) => {
+  res.status(200).json({status:"ok"});
+});
 
 // Inicializar la base de datos y luego iniciar el servidor
 initDB().then(() => {
